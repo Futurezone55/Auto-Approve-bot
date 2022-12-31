@@ -1,42 +1,27 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# This workflow will install Deno then run `deno lint` and `deno test`.
-# For more information see: https://github.com/denoland/setup-deno
-
-name: Deno
-
+name: deno
 on:
   push:
-    branches: ["main"]
+  workflow_dispatch:
+  issues:
+    types: [opened, edited, deleted, reopened, locked, unlocked]
+  issue_comment:
+    types: [created, deleted]
   pull_request:
-    branches: ["main"]
-
-permissions:
-  contents: read
-
+    types: [opened, reopened, closed, locked, unlocked]
 jobs:
-  test:
+  notify:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Setup repo
-        uses: actions/checkout@v3
-
-      - name: Setup Deno
-        # uses: denoland/setup-deno@v1
-        uses: denoland/setup-deno@9db7f66e8e16b5699a514448ce994936c63f0d54
+      - uses: actions/checkout@v3
+      - name: Telegram Notifications for Actions on GitHub
+        uses: EverythingSuckz/github-telegram-notify@main
         with:
-          deno-version: v1.x
-
-      # Uncomment this step to verify the use of 'deno fmt' on each commit.
-      # - name: Verify formatting
-      #   run: deno fmt --check
-
-      - name: Run linter
-        run: deno lint
-
-      - name: Run tests
-        run: deno test -A
+          bot_token: '${{ secrets.BOT_TOKEN }}'
+          chat_id: '${{ secrets.CHAT_ID }}'
+Footer
+© 2022 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
